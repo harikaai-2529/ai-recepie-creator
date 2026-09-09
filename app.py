@@ -8,6 +8,15 @@ load_dotenv()
 
 # Get Gemini API key
 api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    try:
+        api_key = st.secrets["GEMINI_API_KEY"]
+    except Exception:
+        api_key = None
+
+if not api_key:
+    st.error("Gemini API key is not configured.")
+    st.stop()
 
 # Create Gemini client
 client = genai.Client(api_key=api_key)
